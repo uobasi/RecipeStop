@@ -31,5 +31,5 @@ local Folder
 ```
 Then you can start the server with:
 ```
-python3 run.py
+python run.py
 ```
