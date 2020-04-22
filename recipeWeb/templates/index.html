@@ -1,0 +1,39 @@
+{%extends "layout.html"%}
+
+{%block content%}
+    <h6 class="border-bottom mb-15">Recipes Of The Day</h6>
+    {%for rep in repOfDay%}
+        <section class="media content-section" style="width: 450px; height: 380px; float:left; background-color: #dddddd; margin-right: 55px; margin-top: 10px;  margin-left:30px; border-bottom-color: #A00001; border-bottom-width: 5px; border-radius: 15px;"> 
+            <div class="media-body">
+                <div class="article-metadata" >
+                    <p class="article-title "><img src='{{ rep.image }}' style="width: 410px; height: 250px;border-radius: 15px; padding-top: 5px;" /></p>
+                    <div style="padding-left: 10px;">
+                        <h6><a class="mr-2" style="color: #444444; width: 100px; height: 20px;"  href="{{url_for('RecipeFile',id=rep.id)}}" >{{ rep.name }}</a></h6>
+                        <small class="text-muted">{{ rep.stars}}</small>
+                        <br>
+                        <small class="text-muted">{{ rep.time}}</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {%endfor %}
+    <br>
+    <h2 class="border-bottom mb-15">{{log_html}}</h2>
+    {%for food in foodList%}
+        <section class="media content-section" style="width: 220px; height: 320px; float:left; background-color: #dddddd; margin-right: 25px; margin-left: 30px; margin-top: 10px; border-bottom-color: #A00000; border-bottom-width: 5px;  padding-left: 0px;padding-top: 0px;"> 
+            <div class="media-body">
+              <div class="article-metadata">
+                <p class="article-title "><img src='{{ food.image }}' style="width: 220px; height: 150px;"/></p>
+                <div style="padding-left: 10px;">
+                    <h6><a class="mr-2" style="color: #444444; width: 100px; height: 20px;" href="{{url_for('RecipeFile',id=food.id)}}" >{{ food.name }}</a></h6>
+                    <small class="text-muted" >{{ food.stars}}</small>
+                </div>
+              </div>
+              
+            </div>
+        </section>
+    {%endfor %}
+{%endblock content%}
+
+
+

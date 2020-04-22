@@ -1,0 +1,28 @@
+{%extends "layout.html"%}
+{%block content%}
+<ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #EBEBEB;">
+    <li style="float: left;   display: block; text-align: center; padding: 16px; text-decoration: none; border-left: 2px;" >
+        <a style="color: #444444;" href="#">Saved Recipes</a>
+    </li>
+    <li style="float: left;   display: block; text-align: center; padding: 16px; text-decoration: none; border-left: 2px;">
+        <a style="color: #444444;" href="#">Recommend Recipes</a>
+    </li>
+    <li style="float: left;   display: block; text-align: center; padding: 16px; text-decoration: none; border-left: 2px;">
+        <a style="color: #444444;" href="#">Add Your Recipe</a>
+    </li>
+</ul>
+    {%for food in savedList%}
+    <section class="media content-section" style="width: 240px; height: 320px; float:left; background-color: #dddddd; margin-right: 25px; margin-top: 10px; border-bottom-color: #A00000; border-bottom-width: 5px;  padding-left: 0px;padding-top: 0px;"> 
+        <div class="media-body">
+        <div class="article-metadata">
+            <p class="article-title "><img src='{{ food.image }}' style="width: 240px; height: 150px;"/></p>
+            <div style="padding-left: 10px;">
+                <h6><a class="mr-2" style="color: #444444; width: 100px; height: 20px;" href="{{url_for('RecipeFile',id=food.id)}}" >{{ food.name }}</a></h6>
+                <small class="text-muted">{{ food.stars}}</small>
+            </div>
+        </div>
+        
+        </div>
+    </section>
+    {%endfor %}
+{%endblock content%}
