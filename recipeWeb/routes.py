@@ -9,7 +9,6 @@ foodList=[]
 count = 0
 for i in FoodItem.query.all():
     if i.image != 'No Image':
-        print(i.name)
         foodList.append({"name":i.name, "image":i.image, "stars":i.stars, "id":i.id})
         count+=1
         if count > 103:
@@ -114,12 +113,24 @@ def ForYou():
 @app.route('/')
 @app.route('/search', methods=['GET','POST'])
 def Search():
-    if request.method =='POST' and request.form['query'] is not None:
+    if request.method =='POST':
         query = request.form['query']
         if query:
             return redirect(url_for('SearchWithQuery',query=query))
 
-        query_spage = request.form['query_spage']
+    if current_user.is_authenticated:
+        userSavedFoods= current_user.userSavedFoods
+        savedList=[]
+        for x in userSavedFoods:
+            savedList.append(FoodItem.query.get(x.foodId))
+        return render_template('search.html', title="Search", savedList=savedList, savedListSize=len(savedList))
+    return render_template('search.html', title="Search")
+
+
+@app.route('/searchPage', methods=['GET','POST'])
+def Search2():
+    if request.method =='POST':
+        query_spage = request.form['recipeText']
         if query_spage:
             return redirect(url_for('SearchWithQuery',query=query_spage))
     if current_user.is_authenticated:
@@ -129,9 +140,8 @@ def Search():
         for x in userSavedFoods:
             savedList.append(FoodItem.query.get(x.foodId))
         return render_template('search.html', title="Search", savedList=savedList, savedListSize=savedListSize)
-    return render_template('search.html', title="Search")
+    return render_template('search.html', title="Search")   
 
-    
 
 @app.route('/search/<query>', methods=['GET','POST'])
 def SearchWithQuery(query):
@@ -171,3 +181,47 @@ def DeleteRecipe(id):
         flash('Recipe is already saved','danger')
 
     return redirect(url_for('RecipeFile',id=recipefile.id))
+
+
+@app.route('/recipeRecommend/<id>', methods=['GET','POST'])
+def RecommendRecipe(id):
+    matchedFoods =[]
+    recipefile = FoodItem.query.filter_by(id=id).first()
+    if len(recipefile.tags.splitlines()) == 0:
+        return render_template('RecipeRecommend.html', recipefile=recipefile, title="Recommendation "+recipefile.name, tagLength=len(recipefile.tags.splitlines()))
+
+    else:
+        for i in recipefile.tags.splitlines():
+            matchedFoods = FoodItem.query.filter(FoodItem.tags.like('%'+i+'%')).all()
+            break
+        return render_template('RecipeRecommend.html', recipefile=recipefile, matchedFoods=matchedFoods, title="Recommendation "+recipefile.name, tagLength=len(recipefile.tags.splitlines()))
+        
+
+@app.route('/foryou/recipeRecommend')
+@login_required
+def UserRecommendation():
+    matchedFoods =[]
+    userSavedFoods= current_user.userSavedFoods
+    if len(userSavedFoods) == 0:
+        return render_template('UserRecommend.html',  title="Recommendation "+current_user.username, tagLength=len(userSavedFoods))
+    else:
+        for i in userSavedFoods:
+            temp = FoodItem.query.get(i.foodId)
+            for x in temp.tags.splitlines():
+                matchedFoods.append(FoodItem.query.filter(FoodItem.tags.like('%'+x+'%')).all())
+                break
+            break
+        return render_template('UserRecommend.html',  matchedFoods=matchedFoods[0][1:], title="Recommendation "+current_user.username, tagLength=len(userSavedFoods))
+        
+
+@app.route('/voteSaved/<id>', methods=['GET','POST'])
+@login_required
+def VoteSaved(id):
+    recipefile = FoodItem.query.filter_by(id=id).first()
+    if request.method == 'POST':
+
+        flash('Vote Saved','success')
+        return redirect(url_for('RecipeFile',id=recipefile.id))
+
+    return redirect(url_for('RecipeFile',id=recipefile.id))   
+    
