@@ -33,3 +33,10 @@ Then you can start the server with:
 ```
 python run.py
 ```
+Team Members
+
+Uba Obasi
+
+Jasmine Otto
+
+Damaion Freeman
