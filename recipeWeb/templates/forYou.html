@@ -2,13 +2,13 @@
 {%block content%}
 <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #EBEBEB;">
     <li style="float: left;   display: block; text-align: center; padding: 16px; text-decoration: none; border-left: 2px;" >
-        <a style="color: #444444;" href="#">Saved Recipes</a>
+        <a style="color: #444444; text-decoration: none;" href="{{url_for('ForYou')}}">Saved Recipes</a>
     </li>
     <li style="float: left;   display: block; text-align: center; padding: 16px; text-decoration: none; border-left: 2px;">
-        <a style="color: #444444;" href="#">Recommend Recipes</a>
+        <a style="color: #444444; text-decoration: none;" href="{{url_for('UserRecommendation')}}">Recommend Recipes</a>
     </li>
     <li style="float: left;   display: block; text-align: center; padding: 16px; text-decoration: none; border-left: 2px;">
-        <a style="color: #444444;" href="#">Add Your Recipe</a>
+        <a style="color: #444444; text-decoration: none;" href="#">Add Recipe</a>
     </li>
 </ul>
     {%for food in savedList%}
