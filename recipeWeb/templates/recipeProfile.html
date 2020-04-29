@@ -1,81 +1,98 @@
 {%extends "layout.html"%}
 
 {%block content%}
-    <section class="media content-section col-md-4" style="width: 350px; height: 450px; float:left; background-color: #dddddd; margin-right: 0px; margin-top: 10px; margin-bottom: 2px; margin-left:5px; border-bottom-color: #A00000; border-bottom-width: 5px; border-radius: 15px;"> 
-        <div class="media-body">
-            <div class="article-metadata">
-                <p class="article-title "><img src='{{ recipefile.image }}' style="width: 310px; height: 250px; border-radius: 9px;"/></p>
-                <h6><a class="mr-2" style="color: #444444; width: 100px; height: 20px;" href="{{url_for('RecipeFile',id=recipefile.id)}}" >{{ recipefile.name }}</a></h6>
-                <small class="text-muted">{{ recipefile.stars}}</small>
-                <br>
-                <small class="text-muted">{{recipefile.level.splitlines()[0]}}</small>
-                <br>
-                <small class="text-muted">{{recipefile.level.splitlines()[1]}}</small>
-                <br>
-                <small class="text-muted">{{ recipefile.time}}</small>
-            </div>
-        </div>
-    </section>
-    <section class="media content-section col-md-8 " style="float:right; background-color: #dddddd; margin-right: 0px; margin-top: 10px;  margin-left:5px; border-bottom-color: #A00000; border-bottom-width: 5px; border-radius: 15px;" > 
-        <div class="media-body">
-            <div class="article-metadata">
-                <h3>Ingredients</h3>
-                {%for i in recipefile.ingredients.splitlines()%}
-                    <p class="article-title ">{{i}}</p>
-                {%endfor%}
-            </div>
-            <div class="article-metadata">
-                <h3>Directions</h3>
-                {%for i in recipefile.directions.splitlines()%}
-                    <p class="article-title ">{{i}}</p>
-                {%endfor%}
-            </div>
-        </div>
-    </section>
-    <div>
-        {%if not flag%}
-        <form action="{{url_for('SaveRecipe',id=recipefile.id)}}" method="POST" >
-            <p><input class="btn btn-default" style="background-color: #A00000; margin-left: 5px; border-radius: 15px; width:350px; height:45px;color: #ffffff; "class="glyphicon glyphicon-search" type="submit" value="Save Recipe"/></p>
-        </form>
-        {%else%}
-        <form action="{{url_for('DeleteRecipe',id=recipefile.id)}}" method="POST">
-            <p><input class="btn btn-default" style="background-color: #A00000; margin-left: 5px;  border-radius: 15px; width:350px; height:45px;color: #ffffff; "class="glyphicon glyphicon-search" type="submit" value="Delete Recipe"/></p>
-        </form>
-        {%endif%}
-    </div>
-    <section class="media content-section" style="float:left; background-color: #dddddd; margin-right: 55px; margin-left:5px;  border-bottom-color: #A00000; border-bottom-width: 5px; border-radius: 15px;" > 
-        <div class="media-body">
-            <div class="article-metadata">
-                <h3>Tags</h3>
-                {%for i in recipefile.tags.splitlines()%}
-                    <p class="article-title"><a class="nav-item" style="color: #444444;"href="{{url_for('SearchWithQuery', query=i)}}">{{i}}</a></p>
-                {%endfor%}
-            </div>
-        </div>
-    </section>
+<ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #DDDDDD; border-radius: 5px;">
 
-    {%if current_user.is_authenticated%}
-        <div class="content-section" style="float:left; width:100%; background-color: #dddddd; margin-right: 55px; margin-left:5px; border-bottom-color: #A00000; border-bottom-width: 5px; border-radius: 15px;">
-            <h2>Leave a Comment</h2>
-            <form method="POST" id="comment_form">
-                <div >
-                    <textarea style="width:100%; background-color: #DDDDDD;" name ="comment_content" id="comment_content" class="form-control" placeholder="Enter Comment" rows="5"></textarea>
-                </div>
-                <div>
-                    <input type="submit" name="submit" id="submit" class="btn btn-default"  style="background-color: #A00000; color: #ffffff;" value="Submit">
-                </div>
-            </form>
+    <li style="float: left; display: block; text-align: center; padding: 10px; text-decoration: none; border-right: 5px; border-color: #A00000;">
+        <h6><a style="color: #444444; text-decoration: none;" href="{{url_for('RecommendRecipe',id=recipefile.id)}}">Similar Recipes</a></h6>
+    </li>
+</ul>
+<section class="media content-section col-md-4" style="width: 350px; height: 450px; float:left; background-color: #dddddd; margin-right: 0px; margin-top: 10px; margin-bottom: 2px; margin-left:5px; border-bottom-color: #A00000; border-bottom-width: 5px; border-radius: 15px;"> 
+    <div class="media-body">
+        <div class="article-metadata">
+            <p class="article-title "><img src='{{ recipefile.image }}' style="width: 310px; height: 250px; border-radius: 9px;"/></p>
+            <h6><a class="mr-2" style="color: #444444; width: 100px; height: 20px;" href="{{url_for('RecipeFile',id=recipefile.id)}}" >{{ recipefile.name }}</a></h6>
+            <small class="text-muted">{{ recipefile.stars}}</small>
+            <br>
+            <small class="text-muted">{{recipefile.level.splitlines()[0]}}</small>
+            <br>
+            <small class="text-muted">{{recipefile.level.splitlines()[1]}}</small>
+            <br>
+            <small class="text-muted">{{ recipefile.time}}</small>
         </div>
-    {%endif%}
-    <div class="content-section" style="float:left; width:100%; background-color: #dddddd; margin-right: 55px; margin-left:5px; border-bottom-color: #A00000; border-bottom-width: 5px; border-radius: 15px;">
-        <h3>Comments</h3>
-        {%for x in allComments%}
-        <div class="content-section" >
-            <p>{{x.userId}}</p>
-            <p>{{x.post}}</p>
-        </div>
-        {%endfor%}
     </div>
+</section>
+<section class="media content-section col-md-8 " style="float:right; background-color: #dddddd; margin-right: 0px; margin-top: 10px;  margin-left:5px; border-bottom-color: #A00000; border-bottom-width: 5px; border-radius: 15px;" > 
+    <div class="media-body">
+        <div class="article-metadata">
+            <h3>Ingredients</h3>
+            {%for i in recipefile.ingredients.splitlines()%}
+                <p class="article-title ">{{i}}</p>
+            {%endfor%}
+        </div>
+        <div class="article-metadata">
+            <h3>Directions</h3>
+            {%for i in recipefile.directions.splitlines()%}
+                <p class="article-title ">{{i}}</p>
+            {%endfor%}
+        </div>
+    </div>
+</section>
+<div >
+    {%if not flag%}
+    <form action="{{url_for('SaveRecipe',id=recipefile.id)}}" method="POST" >
+        <p><input class="btn btn-default" style="background-color: #A00000; margin-bottom: -12px; margin-left: 5px; border-radius: 15px; width:350px; height:45px;color: #ffffff; "type="submit" value="Save Recipe"/></p>
+    </form>
+    {%else%}
+    <form action="{{url_for('DeleteRecipe',id=recipefile.id)}}" method="POST">
+        <p><input class="btn btn-default" style="background-color: #A00000; margin-bottom: -12px; margin-left: 5px;  border-radius: 15px; width:350px; height:45px;color: #ffffff; " type="submit" value="Delete Recipe"/></p>
+    </form>
+    {%endif%}
+</div>
+{%if current_user.is_authenticated%}
+<div >
+    <form action="{{url_for('VoteSaved',id=recipefile.id)}}" method="POST" >
+        <p style="float:left;">
+            <input class="btn btn-default" style="background-color: #A00000;  margin-left: 5px; border-radius: 15px; width:170px; height:45px;color: #ffffff; " type="submit" value="Like"/>
+            <input class="btn btn-default" style="background-color: #A00000;  margin-left: 5px; border-radius: 15px; width:170px; height:45px;color: #ffffff; " type="submit" value="Dislike"/>
+        </p>
+    </form>
+</div>
+{%endif%}
+
+<section class="media content-section" style="float:left; background-color: #dddddd; margin-right: 55px; margin-left:5px;  border-bottom-color: #A00000; border-bottom-width: 5px; border-radius: 15px;" > 
+    <div class="media-body">
+        <div class="article-metadata">
+            <h3>Tags</h3>
+            {%for i in recipefile.tags.splitlines()%}
+                <p class="article-title"><a class="nav-item" style="color: #444444;"href="{{url_for('SearchWithQuery', query=i)}}">{{i}}</a></p>
+            {%endfor%}
+        </div>
+    </div>
+</section>
+
+{%if current_user.is_authenticated%}
+    <div class="content-section" style="float:left; width:100%; background-color: #dddddd; margin-right: 55px; margin-left:5px; border-bottom-color: #A00000; border-bottom-width: 5px; border-radius: 15px;">
+        <h2>Leave a comment</h2>
+        <form method="POST" id="comment_form">
+            <div >
+                <textarea style="width:100%; background-color: #DDDDDD;" name ="comment_content" id="comment_content" class="form-control" placeholder="Tell us what you think about the recipe.." rows="5"></textarea>
+            </div>
+            <div>
+                <input type="submit" name="submit" id="submit" class="btn btn-default"  style="background-color: #A00000; color: #ffffff;" value="Submit">
+            </div>
+        </form>
+    </div>
+{%endif%}
+<div class="content-section" style="float:left; width:100%; background-color: #dddddd; margin-right: 55px; margin-left:5px; border-bottom-color: #A00000; border-bottom-width: 5px; border-radius: 15px;">
+    <h3>Comments</h3>
+    {%for x in allComments%}
+    <div class="content-section" >
+        <p>{{x.userId}}</p>
+        <p>{{x.post}}</p>
+    </div>
+    {%endfor%}
+</div>
 {%endblock content%}
 
 
