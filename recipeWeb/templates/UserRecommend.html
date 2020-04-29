@@ -1,0 +1,25 @@
+{%extends "layout.html"%}
+{%block content%}
+<h5 class="border-bottom mb-15"><a style="color: #444444;" href="{{url_for('ForYou')}}">Recommended recipes for {{current_user.username}}</a></h5>
+    {%if tagLength == 0%}
+        <P>No Recommendation Found</P>
+    {%else%}
+    {%for food in matchedFoods%}
+    <section class="media content-section" style="width: 240px; height: 320px; float:left; background-color: #dddddd; margin-right: 25px; margin-top: 10px; border-bottom-color: #A00000; border-bottom-width: 5px;  padding-left: 0px;padding-top: 0px;"> 
+        <div class="media-body">
+        <div class="article-metadata">
+            <p class="article-title "><img src='{{ food.image }}' style="width: 240px; height: 150px;"/></p>
+            <div style="padding-left: 10px;">
+                <h6><a class="mr-2" style="color: #444444; width: 100px; height: 20px;" href="{{url_for('RecipeFile',id=food.id)}}" >{{ food.name }}</a></h6>
+                <small class="text-muted">{{ food.stars}}</small>
+            </div>
+        </div>
+        
+        </div>
+    </section>
+    {%endfor %}
+    {%endif%}
+
+
+
+{%endblock content%}
