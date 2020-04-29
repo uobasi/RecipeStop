@@ -1,6 +1,5 @@
 $(document).ready(function(){
     $('form').on('submit', function(event){
-        console.log('hello')
         $.ajax({
             data : {
                 query: $('#foodQuery').val()
@@ -14,7 +13,6 @@ $(document).ready(function(){
 
 $(document).ready(function(){
     $('comment_form').on('submit', function(event){
-        console.log('hello')
         $.ajax({
             data : {
                 comment: $('#comment_content').val()
@@ -27,8 +25,7 @@ $(document).ready(function(){
 
 
 $(document).ready(function(){
-    $('form').on('submit', function(event){
-        console.log('hello')
+    $('Search-Form').on('submit', function(event){
         $.ajax({
             data : {
                 query_spage: $('#recipeText').val()
