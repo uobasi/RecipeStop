@@ -77,7 +77,7 @@ try:
                             directions=flist[i][8],
                             tags=flist[i][9])
         db.session.add(fooditem)
-        print(i)
+
 
     db.session.commit()
 except exc.IntegrityError:
