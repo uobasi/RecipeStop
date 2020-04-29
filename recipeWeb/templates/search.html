@@ -5,20 +5,21 @@
     <h1 style="font-size: 70px;"><a style="color: #a00000; text-decoration: none;" href="{{url_for('Search')}}">RecipeStop</a></h1>
     <p class="text-muted">Search any recipe through our vast database</p>
     <div style="margin-left: 210px;">
-        <form action="{{url_for('Search')}}" method="POST">
+        <form action="{{url_for('Search2')}}" method="POST" id="Search-Form">
             <div style="width: 100%; "class="search">
                 <input style="height: 36px; " type="search" class="searchTerm" name="recipeText" id="recipeText">
-                <input type="submit" class="searchButton" id="searchRecipeButton">
+                <input value="Search"type="submit" class="searchButton" id="searchRecipeButton">
             </div>
         </form> 
      </div>
      {%if current_user.is_authenticated%}
+     {%if savedListSize >= 3%}
         {%for i in range(savedListSize-3,savedListSize)%}
-        <section class="media content-section" style="width: 220px; height: 320px; float:left; background-color: #dddddd; margin-right: 50px; margin-left: 60px; margin-top: 10px; border-bottom-color: #A00000; border-bottom-width: 5px;  padding-left: 0px;padding-top: 0px;"> 
+        <section class="media content-section" style="width: 230px; height: 297px; float:left; background-color: #dddddd; margin-right: 20px; margin-left: 100px; margin-top: 10px; border-bottom-color: #A00000; border-bottom-width: 5px;  padding-left: 0px;padding-top: 0px;"> 
             <div >
               <div class="article-metadata">
-                <p class="article-title "><img src='{{ savedList[i].image }}' style="width: 220px; height: 150px;"/></p>
-                <div style="padding-left: 10px;">
+                <p class="article-title "><img src='{{ savedList[i].image }}' style="width: 230px; height: 150px;"/></p>
+                <div>
                     <h6><a class="mr-2" style="color: #444444; width: 100px; height: 20px;" href="{{url_for('RecipeFile',id=savedList[i].id)}}" >{{ savedList[i].name }}</a></h6>
                     <small class="text-muted" >{{ savedList[i].stars}}</small>
                 </div>
@@ -27,6 +28,7 @@
             </div>
         </section>
         {%endfor%}
+     {%endif%}
      {%endif%}
 </div>
 {%endblock content%}
